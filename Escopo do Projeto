@@ -1,0 +1,102 @@
+# listas para guardar nome dos clientes e os agendamentos
+
+clientes = []
+agendamentos = []
+
+# função para listar os serviços para o cliente
+
+def menu():
+    print ("\n===== Barbearia =====")
+    print ("1. Adicionar cliente")
+    print ("2. Listar clientes")
+    print ("3. Buscar cliente")
+    print ("4. Agendar horário")
+    print ("5. Listar agendamentos")
+    print ("6. Sair")
+    return input ("Escolha uma opção: ")
+
+# função para adição de clientes ao sistema da barbearia
+
+def adicionar_cliente(clientes):
+    nome = input("Digite o nome do cliente: ")
+    sobrenome = input ("Digite seu sobrenome: ")
+    telefone = input("Digite o telefone do cliente: ")
+    servico = input("Digite o serviço solicitado: ")
+    cliente = {
+        "nome": nome,
+        "sobrenome": sobrenome,
+        "telefone": telefone,
+        "servico": servico
+}
+    clientes.append(cliente)
+    print(f"Cliente {nome} adicionado com sucesso!")
+
+# função para listar os clientes que foram adicionados ao sistema
+
+def listar_clientes(clientes):
+    if not clientes:
+        print("Nenhum cliente registrado ainda.")
+    else:
+        print("\nLista de Clientes:")
+        for idx, cliente in enumerate(clientes, start=1):
+            print(f"{idx}. Nome: {cliente['nome']}, Sobrenome: {cliente['sobrenome']}, Telefone: {cliente['telefone']}, Serviço: {cliente['servico']}")
+
+# função para buscar os clientes que já estão cadastrados no sistema
+
+def buscar_cliente(clientes):
+    nome_busca = input("Digite o nome do cliente que deseja buscar: ")
+    encontrados = [cliente for cliente in clientes if nome_busca.lower() in cliente['nome'].lower()]
+    if encontrados:
+        print("\nClientes encontrados:")
+        for cliente in encontrados:
+            print(f"Nome: {cliente['nome']}, Telefone: {cliente['telefone']}, Serviço: {cliente['servico']}")
+    else:
+        print("Nenhum cliente encontrado com esse nome.")
+
+    # função para agendamento do serviço a ser realizado, sendo elas o nome do cliente, a data e o horário
+
+def agendar_horario(agendamentos):
+    nome = input("Digite o nome do cliente para o agendamento: ")
+    data = input("Digite a data do agendamento (DD/MM/AAAA): ")
+    horario = input("Digite o horário do agendamento (HH:MM): ")
+    agendamento = {
+        "nome": nome,
+        "data": data,
+        "horario": horario
+        }
+    agendamentos.append(agendamento)
+    print(f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso!")
+
+# função função para mostrar os agendamentos realizados para clientes e barbeiros
+
+def listar_agendamentos(agendamentos):
+    if not agendamentos:
+        print("Nenhum agendamento registrado ainda.")
+    else:
+        print("\nLista de Agendamentos:")
+        for idx, agendamento in enumerate(agendamentos, start=1):
+            print(f"{idx}. Nome: {agendamento['nome']}, Data: {agendamento['data']}, Horário: {agendamento['horario']}")
+
+# função para escolha do serviço desejado
+
+def main():
+    while True:
+        opcao = menu()
+        if opcao == "1":
+            adicionar_cliente(clientes)
+        elif opcao == "2":
+            listar_clientes(clientes)
+        elif opcao == "3":
+            buscar_cliente(clientes)
+        elif opcao == "4":
+            agendar_horario(agendamentos)
+        elif opcao == "5":
+            listar_agendamentos(agendamentos)
+        elif opcao == "6":
+            print("Saindo do programa. Até logo!")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    main()
