@@ -1,3 +1,16 @@
+from tkinter import *
+
+interface = Tk()
+
+interface.title("Barbearia")
+boasvindas = Label(interface, text="Saudações!")
+boasvindas.grid(column=3, row= 5)
+
+
+interface.mainloop()
+
+
+
 # listas para guardar nome dos clientes e os agendamentos
 
 clientes = []
@@ -18,15 +31,15 @@ def menu():
 # função para adição de clientes ao sistema da barbearia
 
 def adicionar_cliente(clientes):
-    nome = input("Digite o nome do cliente: ")
-    sobrenome = input ("Digite seu sobrenome: ")
+    nome = input("Digite o primeiro nome: ")
+    sobrenome = input ("Digite o sobrenome: ")
     telefone = input("Digite o telefone do cliente: ")
-    servico = input("Digite o serviço solicitado: ")
+    email = input("Digite o e-mail do cliente: ")
     cliente = {
         "nome": nome,
         "sobrenome": sobrenome,
         "telefone": telefone,
-        "servico": servico
+        "e-mail": email
 }
     clientes.append(cliente)
     print(f"Cliente {nome} adicionado com sucesso!")
@@ -39,7 +52,7 @@ def listar_clientes(clientes):
     else:
         print("\nLista de Clientes:")
         for idx, cliente in enumerate(clientes, start=1):
-            print(f"{idx}. Nome: {cliente['nome']}, Sobrenome: {cliente['sobrenome']}, Telefone: {cliente['telefone']}, Serviço: {cliente['servico']}")
+            print(f"{idx}. Nome: {cliente['nome']}, Sobrenome: {cliente['sobrenome']}, Telefone: {cliente['telefone']}, E-mail: {cliente['e-mail']}")
 
 # função para buscar os clientes que já estão cadastrados no sistema
 
@@ -49,7 +62,7 @@ def buscar_cliente(clientes):
     if encontrados:
         print("\nClientes encontrados:")
         for cliente in encontrados:
-            print(f"Nome: {cliente['nome']}, Telefone: {cliente['telefone']}, Serviço: {cliente['servico']}")
+            print(f"Nome: \n{cliente['nome']}, \nTelefone: {cliente['telefone']}, E-mail: {cliente['e-mail']}")
     else:
         print("Nenhum cliente encontrado com esse nome.")
 
@@ -57,8 +70,8 @@ def buscar_cliente(clientes):
 
 def agendar_horario(agendamentos):
     nome = input("Digite o nome do cliente para o agendamento: ")
-    data = input("Digite a data do agendamento (DD/MM/AAAA): ")
-    horario = input("Digite o horário do agendamento (HH:MM): ")
+    data = input("Digite a data do agendamento: ")
+    horario = input("Digite o horário do agendamento: ")
     agendamento = {
         "nome": nome,
         "data": data,
