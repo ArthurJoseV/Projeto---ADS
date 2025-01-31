@@ -1,13 +1,10 @@
-from tkinter import *
+#Interface (Em desenvolvimento inicial)
+import customtkinter as ctk
 
-interface = Tk()
-
-interface.title("Barbearia")
-boasvindas = Label(interface, text="Saudações!")
-boasvindas.grid(column=3, row= 5)
+windows = ctk.CTk()
 
 
-interface.mainloop()
+windows.mainloop()
 
 
 
