@@ -5,11 +5,6 @@ from tkinter import messagebox
 clientes = []
 agendamentos = []
 
-# listas para guardar nome dos clientes e os agendamentos
-
-clientes = []
-agendamentos = []
-
 # função para listar os serviços para o cliente
 
 def menu():
