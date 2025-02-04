@@ -5,78 +5,116 @@ from tkinter import messagebox
 clientes = []
 agendamentos = []
 
-# Função para adicionar clientes ao sistema da barbearia
-def adicionar_cliente():
-    nome = add_nome.get()
-    sobrenome = add_sobrenome.get()
-    telefone = add_telefone.get()
-    email = add_email.get()
-    
-    if nome and sobrenome and telefone and email:
-        cliente = {
-            "nome": nome,
-            "sobrenome": sobrenome,
-            "telefone": telefone,
-            "e-mail": email
-        }
-        clientes.append(cliente)
-        messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
-        add_nome.delete(0, 'end')
-        add_sobrenome.delete(0, 'end')
-        add_telefone.delete(0, 'end')
-        add_email.delete(0, 'end')
-    else:
-        messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
+# listas para guardar nome dos clientes e os agendamentos
 
-# Função para listar os clientes dentro do prog
-def listar_clientes():
+clientes = []
+agendamentos = []
+
+# função para listar os serviços para o cliente
+
+def menu():
+    print ("\n===== Barbearia =====")
+    print ("1. Adicionar cliente")
+    print ("2. Listar clientes")
+    print ("3. Buscar cliente")
+    print ("4. Agendar horário")
+    print ("5. Listar agendamentos")
+    print ("6. Sair")
+    return input ("Escolha uma opção: ")
+
+# função para adição de clientes ao sistema da barbearia
+
+def adicionar_cliente(clientes):
+    nome = input("Digite o nome do cliente: ")
+    sobrenome = input ("Digite seu sobrenome: ")
+    telefone = input("Digite o telefone do cliente: ")
+    servico = input("Digite o serviço solicitado: ")
+    cliente = {
+        "nome": nome,
+        "sobrenome": sobrenome,
+        "telefone": telefone,
+        "servico": servico
+}
+    clientes.append(cliente)
+    print(f"Cliente {nome + ' ' + sobrenome} adicionado com sucesso!")
+
+# função para listar os clientes que foram adicionados ao sistema
+
+def listar_clientes(clientes):
+    
+    # se não houver clientes registrados, será imprimida uma mensagem informando que não há clientes registrados
     if not clientes:
-        messagebox.showinfo("Clientes", "Nenhum cliente registrado ainda.")
+        print("Nenhum cliente registrado ainda.")
+        
+    # se já houver clientes registrados, será imprimida uma mensagem informando os nomes dos clientes
     else:
-        lista_clientes = "\n".join([f"{cliente['nome']} {cliente['sobrenome']} - {cliente['telefone']} - {cliente['e-mail']}" for cliente in clientes])
-        messagebox.showinfo("Lista de Clientes", lista_clientes)
+        print("\nLista de Clientes:")
+        for idx, cliente in enumerate(clientes, start=1):
+            print(f"{idx}. Nome: {cliente['nome']}, Sobrenome: {cliente['sobrenome']}, Telefone: {cliente['telefone']}, Serviço: {cliente['servico']}")
 
-# Função para buscar clientes
-def buscar_cliente():
-    nome_busca = add_busca.get()
+# função para buscar os clientes que já estão cadastrados no sistema
+
+def buscar_cliente(clientes):
+    
+    # ao inserir o nome de algum cliente, vai listar quais clientes possuem aquele nome e quais estão registrados na plataforma
+    nome_busca = input("Digite o nome do cliente que deseja buscar: ")
     encontrados = [cliente for cliente in clientes if nome_busca.lower() in cliente['nome'].lower()]
-    
     if encontrados:
-        lista_clientes = "\n".join([f"{cliente['nome']} {cliente['sobrenome']} - {cliente['telefone']} - {cliente['e-mail']}" for cliente in encontrados])
-        messagebox.showinfo("Clientes Encontrados", lista_clientes)
+        print("\nClientes encontrados:")
+        for cliente in encontrados:
+            print(f"Nome: {cliente['nome']}, Telefone: {cliente['telefone']}, Serviço: {cliente['servico']}")
     else:
-        messagebox.showinfo("Clientes Encontrados", "Nenhum cliente encontrado com esse nome.")
+        print("Nenhum cliente encontrado com esse nome.")
 
-# Função para agendar horário (a resolver os bugs)
-def agendar_horario():
-    nome = add_agenda_nome.get()
-    data = add_agenda_data.get()
-    horario = add_agenda_horario.get()
-    serviço = add_agenda_servico.get()
-    
-    if nome and data and horario and serviço:
-        agendamento = {
-            "nome": nome,
-            "data": data,
-            "horario": horario,
-            "serviço": serviço
+# função para agendamento do serviço a ser realizado, sendo elas o nome do cliente, a data e o horário
+
+def agendar_horario(agendamentos):
+    nome = input("Digite o nome do cliente para o agendamento: ")
+    sobrenome = input("Digite o sobrenome do cliente para o agendamento: ")
+    data = input("Digite a data do agendamento (DD/MM/AAAA): ")
+    horario = input("Digite o horário do agendamento (HH:MM): ")
+    agendamento = {
+        "nome": nome,
+        "sobrenome": sobrenome,
+        "data": data,
+        "horario": horario
         }
-        agendamentos.append(agendamento)
-        messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente desejará realizar {serviço}")
-        add_agenda_nome.delete(0, 'end')
-        add_agenda_data.delete(0, 'end')
-        add_agenda_horario.delete(0, 'end')
-        add_agenda_servico.delete(0, 'end')
-    else:
-        messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
+    agendamentos.append(agendamento)
+    print(f"Agendamento para {nome + ' ' + sobrenome} no dia {data} às {horario} foi registrado com sucesso!")
 
-# Função para listar agendamentos (messagebox é mais fácil para exibir as informações, além de mais harmônico para a interface)
-def listar_agendamentos():
+# função função para mostrar os agendamentos realizados para clientes e barbeiros
+
+def listar_agendamentos(agendamentos):
     if not agendamentos:
-        messagebox.showinfo("Agendamentos", "Nenhum agendamento registrado ainda.")
+        print("Nenhum agendamento registrado ainda.")
     else:
-        lista_agendamentos = "\n".join([f"{agendamento['nome']} - {agendamento['data']} às {agendamento['horario']}" for agendamento in agendamentos])
-        messagebox.showinfo("Lista de Agendamentos", lista_agendamentos)
+        print("\nLista de Agendamentos:")
+        for idx, agendamento in enumerate(agendamentos, start=1):
+            print(f"{idx}. Nome: {agendamento['nome']}, Data: {agendamento['data']}, Horário: {agendamento['horario']}")
+
+# função para escolha do serviço desejado
+
+def main():
+    while True:
+        opcao = menu()
+        if opcao == "1":
+            adicionar_cliente(clientes)
+        elif opcao == "2":
+            listar_clientes(clientes)
+        elif opcao == "3":
+            buscar_cliente(clientes)
+        elif opcao == "4":
+            agendar_horario(agendamentos)
+        elif opcao == "5":
+            listar_agendamentos(agendamentos)
+        elif opcao == "6":
+            print("Saindo do programa. Até logo!")
+            break
+        else:
+            print("Opção inválida. Tente novamente.")
+
+if __name__ == "__main__":
+    main()
 
 # Configuração da interface gráfica (Será desenvolvido)
 ctk.set_appearance_mode("white")
