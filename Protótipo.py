@@ -165,4 +165,4 @@ interface.mainloop()
 # Modificações de fontes serão feitas
 # Imagens para dar mais autenticidade serão adicionadas
 # Ordenação correta dos itens (Cadastro, Agendamento, Listas de agendados e de clientes cadastrados)
-# MSG nas variáveis significa a criação de widgets para que o usuário possa escrever textos pelo comando do Ctk Entry
+# MSG nas variáveis significa a criação de widgets para que o usuário possa escrever textos pelo comando do Ctk
