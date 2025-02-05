@@ -2,10 +2,12 @@ import customtkinter as ctk
 from tkinter import messagebox
 
 # Listas para guardar nome dos clientes e os agendamentos
+
 clientes = []
 agendamentos = []
 
 # Função para adicionar clientes ao sistema da barbearia
+
 def adicionar_cliente():
     nome = msg_nome.get()
     sobrenome = msg_sobrenome.get()
@@ -21,14 +23,11 @@ def adicionar_cliente():
         }
         clientes.append(cliente)
         messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
-        msg_nome.delete(0, 'end')
-        msg_sobrenome.delete(0, 'end')
-        msg_telefone.delete(0, 'end')
-        msg_email.delete(0, 'end')
     else:
         messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
 
 # Função para listar os clientes dentro do prog
+
 def listar_clientes():
     if not clientes:
         messagebox.showinfo("Clientes", "Nenhum cliente registrado ainda.")
@@ -37,6 +36,7 @@ def listar_clientes():
         messagebox.showinfo("Lista de Clientes", lista_clientes)
 
 # Função para buscar clientes
+
 def buscar_cliente():
     nome_busca = msg_busca.get()
     encontrados = [cliente for cliente in clientes if nome_busca.lower() in cliente['nome'].lower()]
@@ -48,6 +48,7 @@ def buscar_cliente():
         messagebox.showinfo("Clientes Encontrados", "Nenhum cliente encontrado com esse nome.")
 
 # Função para agendar horário (a resolver os bugs)
+
 def agendar_horario():
     nome = msg_agenda_nome.get()
     data = msg_agenda_data.get()
@@ -63,14 +64,11 @@ def agendar_horario():
         }
         agendamentos.append(agendamento)
         messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente desejará realizar {serviço}")
-        msg_agenda_nome.delete(0, 'end')
-        msg_agenda_data.delete(0, 'end')
-        msg_agenda_horario.delete(0, 'end')
-        msg_agenda_servico.delete(0, 'end')
     else:
         messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
 
 # Função para listar agendamentos (messagebox é mais fácil para exibir as informações, além de mais harmônico para a interface)
+
 def listar_agendamentos():
     if not agendamentos:
         messagebox.showinfo("Agendamentos", "Nenhum agendamento registrado ainda.")
@@ -79,6 +77,7 @@ def listar_agendamentos():
         messagebox.showinfo("Lista de Agendamentos", lista_agendamentos)
 
 # Configuração da interface gráfica (Será desenvolvido)
+
 ctk.set_appearance_mode("white")
 ctk.set_default_color_theme("dark-blue")
 
@@ -93,6 +92,7 @@ adicionar_titulo = ctk.CTkLabel(frame, text="Gerenciamento de barbearia (Teste)"
 adicionar_titulo.pack(pady=12, padx=10)
 
 # Configurações para adicionar cliente no sistema
+
 adicionar_nome = ctk.CTkLabel(frame, text="Nome")
 adicionar_nome.pack()
 msg_nome = ctk.CTkEntry(frame)
@@ -117,6 +117,7 @@ botão_adicionar = ctk.CTkButton(frame, text="Adicionar Cliente", command=adicio
 botão_adicionar.pack(pady=2)
 
 # Buscar clientes cadastrados
+
 label_busca = ctk.CTkLabel(frame, text="Buscar Cliente por Nome")
 label_busca.pack()
 msg_busca = ctk.CTkEntry(frame)
@@ -126,6 +127,7 @@ botão_buscar = ctk.CTkButton(frame, text="Buscar Cliente", command=buscar_clien
 botão_buscar.pack(pady=2)
 
 # Agendamento de horários
+
 label_agenda_nome = ctk.CTkLabel(frame, text="Nome do Cliente")
 label_agenda_nome.pack()
 msg_agenda_nome = ctk.CTkEntry(frame)
@@ -150,6 +152,7 @@ botão_agendar = ctk.CTkButton(frame, text="Agendar Horário", command=agendar_h
 botão_agendar.pack(pady=2)
 
 # Listar clientes de agendamentos no programa
+
 botão_listar_clientes = ctk.CTkButton(frame, text="Listar Clientes", command=listar_clientes)
 botão_listar_clientes.pack(pady=2)
 
@@ -162,3 +165,4 @@ interface.mainloop()
 # Modificações de fontes serão feitas
 # Imagens para dar mais autenticidade serão adicionadas
 # Ordenação correta dos itens (Cadastro, Agendamento, Listas de agendados e de clientes cadastrados)
+# MSG nas variáveis significa a criação de widgets para que o usuário possa escrever textos pelo comando do Ctk Entry
