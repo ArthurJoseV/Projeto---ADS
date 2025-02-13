@@ -1,5 +1,6 @@
 import customtkinter as ctk
 from tkinter import messagebox
+import sqlite3
 
 # Listas para guardar nome dos clientes e os agendamentos
 
@@ -7,8 +8,10 @@ clientes = []
 agendamentos = []
 
 # Função para adicionar clientes ao sistema da barbearia
-
 def adicionar_cliente():
+    
+    # uso do get() para obter o valor de uma chave, se não houver, retorna "none"
+    # o get() retona o valor de um item de uma chave especificada
     nome = msg_nome.get()
     sobrenome = msg_sobrenome.get()
     telefone = msg_telefone.get()
@@ -22,30 +25,59 @@ def adicionar_cliente():
             "e-mail": email
         }
         clientes.append(cliente)
-        messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
+        
+        # mensagem que aparece após o registro do cliente
+        messagebox.showinfo("Sucesso", f"{nome} {sobrenome} adicionado com sucesso! Seja bem-vindo!")
     else:
+        
+        # mensagem que aparece caso o cliente não preencha todos os campos
         messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
+        
+bancoDados = sqlite3.connect('barbearia.db')
 
-# Função para listar os clientes dentro do prog
+# recebe o objeto onde criei o banco e usar o método cursor, que é o cursor que conseguimos usar os comandos do sql
+cursor = bancoDados.cursor()
+
+cursor.execute ("""CREATE TABLE IF NOT EXISTS Usuarios
+(
+    id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    telefone TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE,
+    data_cadastro DATE DEFAULT (DATE('now'))
+);
+""")
+
+# Função para listar os clientes registrados no programa
 
 def listar_clientes():
     if not clientes:
+        
+        # mensagem que aparece caso não haja clientes registrados no programa
         messagebox.showinfo("Clientes", "Nenhum cliente registrado ainda.")
     else:
+        
+        # mensagem informada quando já há clientes registrados, informando o nome, sobrenome, telefone e e-mail
         lista_clientes = "\n".join([f"{cliente['nome']} {cliente['sobrenome']} - {cliente['telefone']} - {cliente['e-mail']}" for cliente in clientes])
         messagebox.showinfo("Lista de Clientes", lista_clientes)
 
 # Função para buscar clientes
 
 def buscar_cliente():
+    
+    # uso do get() para buscar um cliente específico
     nome_busca = msg_busca.get()
     encontrados = [cliente for cliente in clientes if nome_busca.lower() in cliente['nome'].lower()]
     
     if encontrados:
+        
+        # caso haja um cliente com o nome procurado será mostrado uma lista com os clientes com o nome informado
         lista_clientes = "\n".join([f"{cliente['nome']} {cliente['sobrenome']} - {cliente['telefone']} - {cliente['e-mail']}" for cliente in encontrados])
         messagebox.showinfo("Clientes Encontrados", lista_clientes)
-    else:
-        messagebox.showinfo("Clientes Encontrados", "Nenhum cliente encontrado com esse nome.")
+    elif not encontrados:
+        
+        # se não houver nenhum cliente com o nome informado, essa mensagem será impressa na tela
+        messagebox.showwarning("Clientes Encontrados", "Nenhum cliente encontrado.")
 
 # Função para agendar horário (a resolver os bugs)
 
@@ -62,17 +94,27 @@ def agendar_horario():
             "horario": horario,
             "serviço": serviço
         }
+        
+        # adição de clientes a lista de agendamento
         agendamentos.append(agendamento)
+        
+        # mensagem que aparece após o agendamento do cliente
         messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente desejará realizar {serviço}")
     else:
+        
+        # mensagem que aparece caso o cliente não preencha todos os campos
         messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
 
 # Função para listar agendamentos (messagebox é mais fácil para exibir as informações, além de mais harmônico para a interface)
 
 def listar_agendamentos():
     if not agendamentos:
+        
+        # mensagem que é informada, caso não haja agendamentos no momento
         messagebox.showinfo("Agendamentos", "Nenhum agendamento registrado ainda.")
     else:
+        
+        # caso contrário, se tiver agendamentos, é informado o nome do cliente, a data e o horário em que ele vai realizar o serviço
         lista_agendamentos = "\n".join([f"{agendamento['nome']} - {agendamento['data']} às {agendamento['horario']}" for agendamento in agendamentos])
         messagebox.showinfo("Lista de Agendamentos", lista_agendamentos)
 
@@ -82,13 +124,13 @@ ctk.set_appearance_mode("white")
 ctk.set_default_color_theme("dark-blue")
 
 interface = ctk.CTk()
-interface.title("Barbearia (Projeto)")
-interface.geometry("1920x1080")
+interface.title("Gerenciador de Barbearia")
+interface.geometry("700x1080")
 
 frame = ctk.CTkFrame(interface)
 frame.pack(pady=2, padx=10, fill="both", expand=True)
 
-adicionar_titulo = ctk.CTkLabel(frame, text="Gerenciamento de barbearia (Teste)", font=("Calisto MT", 24))
+adicionar_titulo = ctk.CTkLabel(frame, text="Gerenciador de Barbearia", font=("Calisto MT", 24))
 adicionar_titulo.pack(pady=12, padx=10)
 
 # Configurações para adicionar cliente no sistema
@@ -160,9 +202,3 @@ botão_listar_agendamentos = ctk.CTkButton(frame, text="Listar Agendamentos", co
 botão_listar_agendamentos.pack(pady=2)
 
 interface.mainloop()
-
-# Correção de bugs serão realizadas durante a semana (Principalmente o do botão do agendamento)
-# Modificações de fontes serão feitas
-# Imagens para dar mais autenticidade serão adicionadas
-# Ordenação correta dos itens (Cadastro, Agendamento, Listas de agendados e de clientes cadastrados)
-# MSG nas variáveis significa a criação de widgets para que o usuário possa escrever textos pelo comando do Ctk Entry
