@@ -27,7 +27,7 @@ def adicionar_cliente():
         clientes.append(cliente)
         
         # mensagem que aparece após o registro do cliente
-        messagebox.showinfo("Sucesso", f"{nome} {sobrenome} adicionado com sucesso! Seja bem-vindo!")
+        messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
     else:
         
         # mensagem que aparece caso o cliente não preencha todos os campos
@@ -36,7 +36,7 @@ def adicionar_cliente():
 bancoDados = sqlite3.connect('barbearia.db')
 
 # recebe o objeto onde criei o banco e usar o método cursor, que é o cursor que conseguimos usar os comandos do sql
-cursor = bancoDados.cursor()
+cursor = bancoDados.cursor ()
 
 cursor.execute ("""CREATE TABLE IF NOT EXISTS Usuarios
 (
@@ -74,10 +74,10 @@ def buscar_cliente():
         # caso haja um cliente com o nome procurado será mostrado uma lista com os clientes com o nome informado
         lista_clientes = "\n".join([f"{cliente['nome']} {cliente['sobrenome']} - {cliente['telefone']} - {cliente['e-mail']}" for cliente in encontrados])
         messagebox.showinfo("Clientes Encontrados", lista_clientes)
-    elif not encontrados:
+    else:
         
         # se não houver nenhum cliente com o nome informado, essa mensagem será impressa na tela
-        messagebox.showwarning("Clientes Encontrados", "Nenhum cliente encontrado.")
+        messagebox.showinfo("Clientes Encontrados", "Nenhum cliente encontrado com esse nome.")
 
 # Função para agendar horário (a resolver os bugs)
 
@@ -120,17 +120,17 @@ def listar_agendamentos():
 
 # Configuração da interface gráfica (Será desenvolvido)
 
-ctk.set_appearance_mode("white")
+ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
 
 interface = ctk.CTk()
-interface.title("Gerenciador de Barbearia")
+interface.title("Gerenciador de Barbearia (Projeto)")
 interface.geometry("700x1080")
 
 frame = ctk.CTkFrame(interface)
 frame.pack(pady=2, padx=10, fill="both", expand=True)
 
-adicionar_titulo = ctk.CTkLabel(frame, text="Gerenciador de Barbearia", font=("Calisto MT", 24))
+adicionar_titulo = ctk.CTkLabel(frame, text="Gerenciador de Barbearia", font=("Calisto MT", 30))
 adicionar_titulo.pack(pady=12, padx=10)
 
 # Configurações para adicionar cliente no sistema
