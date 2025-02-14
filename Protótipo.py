@@ -27,7 +27,7 @@ def adicionar_cliente():
         clientes.append(cliente)
         
         # mensagem que aparece após o registro do cliente
-        messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
+        messagebox.showinfo("Sucesso", f"{nome} {sobrenome} foi adicionado com sucesso! Seja bem-vindo!")
     else:
         
         # mensagem que aparece caso o cliente não preencha todos os campos
@@ -79,7 +79,7 @@ def buscar_cliente():
         # se não houver nenhum cliente com o nome informado, essa mensagem será impressa na tela
         messagebox.showinfo("Clientes Encontrados", "Nenhum cliente encontrado com esse nome.")
 
-# Função para agendar horário (a resolver os bugs)
+# Função para agendar horário
 
 def agendar_horario():
     nome = msg_agenda_nome.get()
@@ -99,7 +99,7 @@ def agendar_horario():
         agendamentos.append(agendamento)
         
         # mensagem que aparece após o agendamento do cliente
-        messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente desejará realizar {serviço}")
+        messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente deseja realizar {serviço}")
     else:
         
         # mensagem que aparece caso o cliente não preencha todos os campos
@@ -118,7 +118,7 @@ def listar_agendamentos():
         lista_agendamentos = "\n".join([f"{agendamento['nome']} - {agendamento['data']} às {agendamento['horario']}" for agendamento in agendamentos])
         messagebox.showinfo("Lista de Agendamentos", lista_agendamentos)
 
-# Configuração da interface gráfica (Será desenvolvido)
+# Configuração da interface gráfica
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
