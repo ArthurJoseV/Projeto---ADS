@@ -2,7 +2,6 @@ import customtkinter as ctk
 from tkinter import messagebox
 import sqlite3
 
-
 # Listas para guardar nome dos clientes e os agendamentos
 
 clientes = []
@@ -34,6 +33,7 @@ def adicionar_cliente():
     email = msg_email.get()
     
     if nome and sobrenome and telefone and email:
+        
         cliente = {
             "nome": nome,
             "sobrenome": sobrenome,
@@ -58,6 +58,7 @@ def adicionar_cliente():
 # Função para listar os clientes registrados no programa
 
 def listar_clientes():
+    
     if not clientes:
         
         # mensagem que aparece caso não haja clientes registrados no programa
@@ -71,7 +72,6 @@ def listar_clientes():
 # Função para buscar clientes
 
 def buscar_cliente():
-    
     
     nome_busca = msg_busca.get()
     encontrados = [cliente for cliente in clientes if nome_busca.lower() in cliente['nome'].lower()]
@@ -89,7 +89,7 @@ def buscar_cliente():
 # Função para agendar horário
 
 def agendar_horario():
-    
+
     nome = msg_agenda_nome.get()
     data = msg_agenda_data.get()
     horario = msg_agenda_horario.get()
@@ -116,6 +116,7 @@ def agendar_horario():
 # Função para listar agendamentos (messagebox é mais fácil para exibir as informações, além de mais harmônico para a interface)
 
 def listar_agendamentos():
+    
     if not agendamentos:
         
         # mensagem que é informada, caso não haja agendamentos no momento
@@ -201,7 +202,7 @@ msg_agenda_servico.pack(pady=2)
 botão_agendar = ctk.CTkButton(frame, text="Agendar Horário", command=agendar_horario)
 botão_agendar.pack(pady=2)
 
-# Listar clientes de agendamentos no programa
+# Listar clientes registrados e agendamentos no programa
 
 botão_listar_clientes = ctk.CTkButton(frame, text="Listar Clientes", command=listar_clientes)
 botão_listar_clientes.pack(pady=2)
