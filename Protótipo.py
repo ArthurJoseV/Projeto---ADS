@@ -2,10 +2,28 @@ import customtkinter as ctk
 from tkinter import messagebox
 import sqlite3
 
+
 # Listas para guardar nome dos clientes e os agendamentos
 
 clientes = []
 agendamentos = []
+
+bancoDados = sqlite3.connect('barbearia.db')
+
+# recebe o objeto onde criei o banco e usar o método cursor, que é o cursor que conseguimos usar os comandos do sql
+cursor = bancoDados.cursor ()
+
+cursor.execute ("""CREATE TABLE IF NOT EXISTS Clientes
+(
+    id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    telefone TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE,
+    data_cadastro DATE DEFAULT (DATE('now'))
+);
+""")
+
+bancoDados.commit()
 
 # Função para adicionar clientes ao sistema da barbearia
 def adicionar_cliente():
@@ -26,27 +44,18 @@ def adicionar_cliente():
         }
         clientes.append(cliente)
         
+        # Inserir cliente no banco de dados
+        cursor.execute("INSERT INTO Clientes (nome, telefone, email) VALUES (?, ?, ?)", (nome, telefone, email))
+        
+        # Salvar as alterações no banco de dados
+        bancoDados.commit()
+        
         # mensagem que aparece após o registro do cliente
-        messagebox.showinfo("Sucesso", f"{nome} {sobrenome} foi adicionado com sucesso! Seja bem-vindo!")
+        messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
     else:
         
         # mensagem que aparece caso o cliente não preencha todos os campos
         messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
-        
-bancoDados = sqlite3.connect('barbearia.db')
-
-# recebe o objeto onde criei o banco e usar o método cursor, que é o cursor que conseguimos usar os comandos do sql
-cursor = bancoDados.cursor ()
-
-cursor.execute ("""CREATE TABLE IF NOT EXISTS Usuarios
-(
-    id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    telefone TEXT UNIQUE NOT NULL,
-    email TEXT UNIQUE,
-    data_cadastro DATE DEFAULT (DATE('now'))
-);
-""")
 
 # Função para listar os clientes registrados no programa
 
@@ -79,7 +88,7 @@ def buscar_cliente():
         # se não houver nenhum cliente com o nome informado, essa mensagem será impressa na tela
         messagebox.showinfo("Clientes Encontrados", "Nenhum cliente encontrado com esse nome.")
 
-# Função para agendar horário
+# Função para agendar horário (a resolver os bugs)
 
 def agendar_horario():
     nome = msg_agenda_nome.get()
@@ -99,7 +108,7 @@ def agendar_horario():
         agendamentos.append(agendamento)
         
         # mensagem que aparece após o agendamento do cliente
-        messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente deseja realizar {serviço}")
+        messagebox.showinfo("Sucesso", f"Agendamento para {nome} no dia {data} às {horario} foi registrado com sucesso! O cliente desejará realizar {serviço}")
     else:
         
         # mensagem que aparece caso o cliente não preencha todos os campos
@@ -118,7 +127,7 @@ def listar_agendamentos():
         lista_agendamentos = "\n".join([f"{agendamento['nome']} - {agendamento['data']} às {agendamento['horario']}" for agendamento in agendamentos])
         messagebox.showinfo("Lista de Agendamentos", lista_agendamentos)
 
-# Configuração da interface gráfica
+# Configuração da interface gráfica (Será desenvolvido)
 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
