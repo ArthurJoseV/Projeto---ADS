@@ -2,16 +2,32 @@ import customtkinter as ctk
 from tkinter import messagebox
 import sqlite3
 
+
 # Listas para guardar nome dos clientes e os agendamentos
 
 clientes = []
 agendamentos = []
 
+bancoDados = sqlite3.connect('barbearia.db')
+
+# recebe o objeto onde criei o banco e usar o método cursor, que é o cursor que conseguimos usar os comandos do sql
+cursor = bancoDados.cursor ()
+
+cursor.execute ("""CREATE TABLE IF NOT EXISTS Clientes
+(
+    id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
+    nome TEXT NOT NULL,
+    telefone TEXT UNIQUE NOT NULL,
+    email TEXT UNIQUE,
+    data_cadastro DATE DEFAULT (DATE('now'))
+);
+""")
+
+bancoDados.commit()
+
 # Função para adicionar clientes ao sistema da barbearia
 def adicionar_cliente():
     
-    # uso do get() para obter o valor de uma chave, se não houver, retorna "none"
-    # o get() retona o valor de um item de uma chave especificada
     nome = msg_nome.get()
     sobrenome = msg_sobrenome.get()
     telefone = msg_telefone.get()
@@ -26,27 +42,18 @@ def adicionar_cliente():
         }
         clientes.append(cliente)
         
+        # Inserir cliente no banco de dados
+        cursor.execute("INSERT INTO Clientes (nome, telefone, email) VALUES (?, ?, ?)", (nome, telefone, email))
+        
+        # Salvar as alterações no banco de dados
+        bancoDados.commit()
+        
         # mensagem que aparece após o registro do cliente
-        messagebox.showinfo("Sucesso", f"{nome} {sobrenome} foi adicionado com sucesso! Seja bem-vindo!")
+        messagebox.showinfo("Sucesso", f"Cliente {nome} adicionado com sucesso! Seja bem-vindo!")
     else:
         
         # mensagem que aparece caso o cliente não preencha todos os campos
         messagebox.showwarning("Erro", "Todos os campos devem ser preenchidos!")
-        
-bancoDados = sqlite3.connect('barbearia.db')
-
-# recebe o objeto onde criei o banco e usar o método cursor, que é o cursor que conseguimos usar os comandos do sql
-cursor = bancoDados.cursor ()
-
-cursor.execute ("""CREATE TABLE IF NOT EXISTS Usuarios
-(
-    id_cliente INTEGER PRIMARY KEY AUTOINCREMENT,
-    nome TEXT NOT NULL,
-    telefone TEXT UNIQUE NOT NULL,
-    email TEXT UNIQUE,
-    data_cadastro DATE DEFAULT (DATE('now'))
-);
-""")
 
 # Função para listar os clientes registrados no programa
 
@@ -65,7 +72,7 @@ def listar_clientes():
 
 def buscar_cliente():
     
-    # uso do get() para buscar um cliente específico
+    
     nome_busca = msg_busca.get()
     encontrados = [cliente for cliente in clientes if nome_busca.lower() in cliente['nome'].lower()]
     
